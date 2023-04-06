@@ -9,10 +9,13 @@ RUN pip install \
         python-multipart==0.0.6 \
         uvicorn==0.21.1 \
         soundfile==0.12.1 \
+        pydantic==1.10.7 \
     --extra-index-url https://download.pytorch.org/whl/cpu
 
 COPY batch_runner.py /
 COPY collators.py /
+COPY messages.py /
+COPY openchatkit_utils.py /
 COPY serializers.py /
 COPY server.py /
 COPY start.sh /
