@@ -1,0 +1,19 @@
+{
+    "exec_file": "/home/kwabena/Projects/whisper-fastapi/client.py",
+    "tasks": [
+        {
+            "name": "transcribe",
+            "params": {
+                "addr": "http://localhost",
+                "port": 8000
+            }
+        }
+    ],
+    "metadata_method": {
+        "name": "get_metadata",
+        "params": {
+            "addr": "http://localhost",
+            "port": 8000
+        }
+    }
+}

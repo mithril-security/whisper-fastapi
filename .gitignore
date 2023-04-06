@@ -185,6 +185,7 @@ ex.c
 *.key.pem
 *.html
 docs/docs/resources/bastionlab/**/*.md
+*.out
 
 # Notebook tests
 /tmp
