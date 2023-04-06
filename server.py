@@ -49,7 +49,7 @@ open_chat_kit_stop_criteria = StopWordsCriteria(open_chat_kit_tokenizer, ["<huma
 def run_open_chat_kit(x: torch.Tensor) -> torch.Tensor:
     return open_chat_kit_model.generate(
         x,
-        max_length=128,
+        max_new_tokens=128,
         temperature=0.7,
         top_p=0.7,
         top_k=50,
