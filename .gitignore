@@ -188,3 +188,5 @@ docs/docs/resources/bastionlab/**/*.md
 
 # Notebook tests
 /tmp
+**/model_store
+**/local_model_store

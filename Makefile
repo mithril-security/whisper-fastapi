@@ -1,6 +1,6 @@
 .PHONY: all docker enclave kill run clean
 
-docker_image = python-test
+docker_image = blindai-api-nitro
 enclave_image = $(docker_image).eif
 godeps = ../cmd/*.go ../*.go ../go.mod ../go.sum
 binary = nitriding

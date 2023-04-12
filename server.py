@@ -9,25 +9,28 @@ from transformers import (
 )
 import numpy as np
 import torch
+import requests
 
 from batch_runner import BatchRunner
 from collators import TorchCollator
 from messages import PredictionMsg
+from model_store import load_from_store
 from openchatkit_utils import StopWordsCriteria
 from serializers import async_speech_to_text_endpoint
 
 STT = "openai/whisper-tiny.en"
 LLM = "togethercomputer/Pythia-Chat-Base-7B"
+MODEL_STORE_ADDR = "172.17.0.1"
 # LLM = "togethercomputer/GPT-NeoXT-Chat-Base-20B"
 
 
 app = FastAPI()
 
-whisper_processor = WhisperProcessor.from_pretrained(STT)
-open_chat_kit_tokenizer = AutoTokenizer.from_pretrained(LLM)
+whisper_processor = load_from_store(STT, WhisperProcessor, MODEL_STORE_ADDR)
+open_chat_kit_tokenizer = load_from_store(LLM, AutoTokenizer, MODEL_STORE_ADDR)
 
 
-whisper_model = WhisperForConditionalGeneration.from_pretrained(STT)
+whisper_model = load_from_store(STT, WhisperForConditionalGeneration, MODEL_STORE_ADDR)
 whisper_model.eval()
 
 def run_whisper(x: torch.Tensor) -> torch.Tensor:
@@ -42,11 +45,11 @@ whisper_runner = BatchRunner(
 app.on_event("startup")(whisper_runner.run)
 
 
-open_chat_kit_model = AutoModelForCausalLM.from_pretrained(LLM)
+open_chat_kit_model = load_from_store(LLM, AutoModelForCausalLM, MODEL_STORE_ADDR)
 open_chat_kit_model.eval()
-open_chat_kit_stop_criteria = StopWordsCriteria(open_chat_kit_tokenizer, ["<human>"], None)
 
 def run_open_chat_kit(x: torch.Tensor) -> torch.Tensor:
+    open_chat_kit_stop_criteria = StopWordsCriteria(open_chat_kit_tokenizer, ["<human>"], None)
     return open_chat_kit_model.generate(
         x,
         max_new_tokens=128,
@@ -65,6 +68,11 @@ open_chat_kit_runner = BatchRunner(
     collator=TorchCollator(),
 )
 app.on_event("startup")(open_chat_kit_runner.run)
+
+
+def activate_nitriding_reverse_proxy():
+    requests.get(url="http://127.0.0.1:8080/enclave/ready")
+app.on_event("startup")(activate_nitriding_reverse_proxy)
 
 
 @app.post("/open-chat-kit/predict")

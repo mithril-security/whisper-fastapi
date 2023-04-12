@@ -3,7 +3,7 @@
 set -x
 set -e
 
-/nitriding -fqdn example.com  -extport 8443  -intport 8080 &
+/nitriding -fqdn example.com  -extport 8443  -intport 8080 -appwebsrv "http://127.0.0.1:8000" &
 echo "[sh] Started nitriding."
 sleep 1
 
