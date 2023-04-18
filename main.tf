@@ -62,10 +62,10 @@ resource "aws_instance" "app_server" {
     enabled = true
   }
 
-  user_data = file("init.sh")
+  user_data                   = file("init.sh")
   user_data_replace_on_change = true
 
   tags = {
-    Name = "automation-test"
+    Name = "blindai-api-nitro"
   }
 }
