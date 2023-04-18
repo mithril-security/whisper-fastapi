@@ -32,7 +32,7 @@ make
 cd
 
 # Build and install nitriding
-git clone https://github.com/brave/nitriding.git
+git clone https://github.com/mithril-security/nitriding.git
 cd nitriding/
 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.1
 echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.bashrc 
