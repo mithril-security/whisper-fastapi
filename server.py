@@ -34,12 +34,12 @@ whisper_model = load_from_store(STT, WhisperForConditionalGeneration, MODEL_STOR
 whisper_model.eval()
 
 def run_whisper(x: torch.Tensor) -> torch.Tensor:
-    return whisper_model.generate(x)
+    return whisper_model.generate(x, max_length=128)
 
 whisper_runner = BatchRunner(
     run_whisper,
-    max_batch_size=2,
-    max_latency_ms=10000,
+    max_batch_size=256,
+    max_latency_ms=200,
     collator=TorchCollator(),
 )
 app.on_event("startup")(whisper_runner.run)
@@ -64,7 +64,7 @@ def run_open_chat_kit(x: torch.Tensor) -> torch.Tensor:
 open_chat_kit_runner = BatchRunner(
     run_open_chat_kit,
     max_batch_size=2,
-    max_latency_ms=10000,
+    max_latency_ms=1000,
     collator=TorchCollator(),
 )
 app.on_event("startup")(open_chat_kit_runner.run)

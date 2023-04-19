@@ -9,8 +9,8 @@ yum install aws-nitro-enclaves-cli-devel -y
 # Configure allocator
 cat << EOF > allocator.yaml
 ---
-memory_mib: 65536
-cpu_count: 8
+memory_mib: 120000
+cpu_count: 12
 EOF
 mv allocator.yaml /etc/nitro_enclaves/
 systemctl start nitro-enclaves-allocator.service && systemctl enable nitro-enclaves-allocator.service
