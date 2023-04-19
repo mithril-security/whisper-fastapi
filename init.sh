@@ -33,9 +33,7 @@ cd squid-proxy
 docker build -t squid-proxy .
 
 # Download app
-cd /
-git clone https://github.com/mithril-security/whisper-fastapi.git
-cd whisper-fastapi
+cd ../ACI-Whisper
 docker build -t guest .
 
 # Install and start model store
