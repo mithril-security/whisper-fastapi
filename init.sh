@@ -20,21 +20,27 @@ echo \
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+# Switch to legacy iptables 
+update-alternatives --set iptables /usr/sbin/iptables-legacy
+update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 
 # Start docker service
-dockerd &
+DOCKER_RAMDISK=true dockerd &
 
 # Create network adapter
 docker network create --driver bridge proxynet
 
 # Build and run squid proxy docker image (push our own squid dockerfile later)
-git clone https://github.com/brunoamaroalmeida/awesome-quickstart-containers.git
-cd squid-proxy
+cd /
+git clone https://github.com/ShannonSD/squid-proxy.git
+cd squid-proxy/squid-proxy
 docker build -t squid-proxy .
 
 # Download app
-cd ../ACI-Whisper
+cd /
+cd ACI-Whisper
 docker build -t guest .
 
 # Install and start model store
