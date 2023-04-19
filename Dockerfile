@@ -8,10 +8,16 @@ RUN pip install \
         uvicorn==0.21.1 \
         soundfile==0.12.1 \
         messages \
+        librosa==0.10.0 \
+        pydantic==1.10.7 \
+        requests==2.28.2 \
     --extra-index-url https://download.pytorch.org/whl/cpu
 
 COPY batch_runner.py /
 COPY collators.py /
+COPY messages.py /
+COPY model_store.py /
+COPY openchatkit_utils.py /
 COPY serializers.py /
 COPY server.py /
 COPY start.sh /
