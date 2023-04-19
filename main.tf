@@ -69,3 +69,8 @@ resource "aws_instance" "app_server" {
     Name = "blindai-api-nitro"
   }
 }
+
+resource "aws_eip_association" "eip-assoc" {
+  instance_id = aws_instance.app_server.id
+  allocation_id = "eipalloc-0f3a9c486003f3618"
+}
