@@ -12,7 +12,6 @@ import torch
 import requests
 import os
 import typing as t
-import logging
 
 from batch_runner import BatchRunner
 from collators import TorchCollator
@@ -120,31 +119,28 @@ async def predict(x: np.ndarray) -> str:
     return transcription[0]
 
 
-@app.post("/audio-summarization-pipeline/predict")
-@async_speech_to_text_endpoint(sample_rate=16000)
-async def predict(x: np.ndarray) -> str:
-    input_features = whisper_processor(
-        x, sampling_rate=16000, return_tensors="pt"
-    ).input_features
-    predicted_ids = await whisper_runner.submit(input_features)
-    transcription = whisper_processor.batch_decode(
-        predicted_ids, skip_special_tokens=True
-    )
-    input_ids = open_chat_kit_tokenizer(
-        f"<human>: {transcription[0]}\n\nSummarize the above into a single sentence.\n<bot>:",
-        return_tensors="pt",
-    ).input_ids
-    predicted_ids = await open_chat_kit_runner.submit(input_ids)
-    transcription = open_chat_kit_tokenizer.batch_decode(
-        predicted_ids, skip_special_tokens=True
-    )
-    return transcription[0]
+if OPENCHATKIT_ENABLED:
+
+    @app.post("/audio-summarization-pipeline/predict")
+    @async_speech_to_text_endpoint(sample_rate=16000)
+    async def predict(x: np.ndarray) -> str:
+        input_features = whisper_processor(
+            x, sampling_rate=16000, return_tensors="pt"
+        ).input_features
+        predicted_ids = await whisper_runner.submit(input_features)
+        transcription = whisper_processor.batch_decode(
+            predicted_ids, skip_special_tokens=True
+        )
+        input_ids = open_chat_kit_tokenizer(
+            f"<human>: {transcription[0]}\n\nSummarize the above into a single sentence.\n<bot>:",
+            return_tensors="pt",
+        ).input_ids
+        predicted_ids = await open_chat_kit_runner.submit(input_ids)
+        transcription = open_chat_kit_tokenizer.batch_decode(
+            predicted_ids, skip_special_tokens=True
+        )
+        return transcription[0]
 
 
 if __name__ == "__main__":
-    port = 8000
-    host = "0.0.0.0"
-    app.on_event("startup")(
-        lambda: logging.info(f"Listening on {host}:{port} with TEE_ENV={TEE_ENV}")
-    )
-    uvicorn.run(app, host=host, port=port)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
