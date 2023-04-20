@@ -25,6 +25,7 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docke
 # Switch to legacy iptables 
 update-alternatives --set iptables /usr/sbin/iptables-legacy
 update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+sleep 10
 
 # Start docker service
 DOCKER_RAMDISK=true dockerd &
