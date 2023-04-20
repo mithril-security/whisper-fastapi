@@ -1,7 +1,7 @@
 import requests
 
 res = requests.post(
-    "https://nitro.mithrilsecurity.io/whisper/predict",
+    "http://localhost:8001/whisper/predict",
     files={
         "audio": open("test2.wav", "rb"),
     },
