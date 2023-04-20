@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export TEE_ENV=nitriding
+
 set -x
 set -e
 
