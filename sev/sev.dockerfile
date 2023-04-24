@@ -19,11 +19,11 @@ COPY ../model_store.py /
 COPY ../openchatkit_utils.py /
 COPY ../serializers.py /
 COPY ../server.py /
-# COPY start-sev.sh /
+# COPY init-sev.sh /
 
 EXPOSE 80
 
-# CMD start-sev.sh
+# CMD init-sev.sh
 
 # debug mode
 EXPOSE 22
