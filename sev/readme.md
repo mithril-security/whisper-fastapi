@@ -75,3 +75,15 @@ terraform plan
 # Apply the changes
 terraform apply
 ```
+
+If you've changed the docker image, you should run this command to force terraform to rebuild it.
+```sh
+# Mark docker_image.image as outdated
+terraform taint docker_image.image
+```
+
+To delete the deployment, run
+```sh
+# Destroy everything that was created
+terraform destroy
+```
