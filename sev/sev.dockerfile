@@ -9,7 +9,6 @@ COPY ./model_store_requirements.txt /root
 COPY ./model_store.py /root
 
 RUN ./sev-init.sh
-RUN ./sev-start.sh
 
 EXPOSE 80 443
 
