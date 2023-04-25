@@ -87,3 +87,10 @@ To delete the deployment, run
 # Destroy everything that was created
 terraform destroy
 ```
+
+## Debug the docker build process
+
+```sh
+# Build the docker image locally
+docker build -t test .. -f sev.dockerfile
+```

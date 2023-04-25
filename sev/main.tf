@@ -176,7 +176,7 @@ resource "azurerm_resource_group_template_deployment" "container" {
 }
 
 output "container_ip" {
-  value = jsondecode(azurerm_resource_group_template_deployment.container.output_content)
+  value = jsondecode(azurerm_resource_group_template_deployment.container.output_content).containerIPv4Address.value
 }
 
 output "cce_policy" {
