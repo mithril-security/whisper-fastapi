@@ -28,16 +28,10 @@ update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 
 # Start docker service
 DOCKER_RAMDISK=true dockerd &
-sleep 15
+sleep 10
 
-# Create network adapter
-docker network create --driver bridge proxynet
-
-# Build and run squid proxy docker image (push our own squid dockerfile later)
-cd /
-git clone https://github.com/ShannonSD/squid-proxy.git
-cd squid-proxy/squid-proxy
-docker build -t squid-proxy .
+# iptable rules inserted from CLI
+iptables -I DOCKER-USER -i docker0 -j DROP
 
 # Download app
 cd /

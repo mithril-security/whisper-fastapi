@@ -44,7 +44,7 @@ def download(args):
         tar.close()
         os.chdir(cur_dir)
 
-        print(f"\n\nModel available at http://localhost:8000/model_store/{name}")
+        print(f"\n\nModel available at http://localhost:8888/model_store/{name}")
 
     if os.path.exists(tmp_dir):
         shutil.rmtree(tmp_dir)
@@ -54,7 +54,7 @@ def remove(args):
     if os.path.exists(directory):
         os.rmdir(directory)
 
-def load_from_store(name: str, cls: Type[PreTrainedModel], host: str = "127.0.0.1", port: int = 8000, force_download: bool = False) -> PreTrainedModel:
+def load_from_store(name: str, cls: Type[PreTrainedModel], host: str = "127.0.0.1", port: int = 8888, force_download: bool = False) -> PreTrainedModel:
     model_store_dir = "./local_model_store"
     url_name = name.replace('/', '--')
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     serve_parser = subparsers.add_parser("serve", help="Launch the model store server")
     serve_parser.add_argument("--address", type=str, default="127.0.0.1", help="Listen address")
-    serve_parser.add_argument("--port", type=int, default="8000", help="Listen port")
+    serve_parser.add_argument("--port", type=int, default="8888", help="Listen port")
     serve_parser.set_defaults(handler=serve)
 
     download_parser = subparsers.add_parser("download", help="Download a model into the store")
