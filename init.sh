@@ -35,7 +35,7 @@ iptables -I DOCKER-USER -i docker0 -j DROP
 
 # Download app
 cd /
-cd ACI-Whisper
+cd whisper-fastapi
 docker build -t guest .
 
 # Install and start model store
