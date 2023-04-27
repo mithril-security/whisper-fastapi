@@ -139,6 +139,9 @@ resource "azurerm_resource_group_template_deployment" "container" {
                       "memoryInGB" : 2
                     }
                   },
+                  "securityContext": {
+                      "privileged": true
+                  }
                 }
               }
             ],

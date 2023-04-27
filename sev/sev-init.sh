@@ -27,27 +27,21 @@ apt-get install -y \
 update-alternatives --set iptables /usr/sbin/iptables-legacy
 update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 
-# Start docker service
-DOCKER_RAMDISK=true dockerd &
-sleep 15
-
-# Build and run squid proxy docker image (push our own squid dockerfile later)
-cd $HOME
-git clone https://github.com/ShannonSD/squid-proxy.git
-# cd squid-proxy/squid-proxy
-# docker build -t squid-proxy .
-
 # Download app
+cd $HOME
 git clone https://github.com/mithril-security/whisper-fastapi.git
 cd $HOME/whisper-fastapi
 git checkout disable-openchatkit
-# docker build --target sev-aci -t guest .
+docker build --target sev-aci -t guest .
 cd $HOME
 
 # Install and start model store
 python3.9 -m pip install -r model_store_requirements.txt
 python3.9 model_store.py download "openai/whisper-tiny.en"
 
-apt-get install -y openssh-server # DEBUG please remove me
+# iptables rules inserted from CLI
+iptables -I DOCKER-USER -i docker0 -d 168.63.129.16 -j ACCEPT
+iptables -I DOCKER-USER -i docker0 -d 127.0.0.1 -j ACCEPT
+iptables -I DOCKER-USER -i docker0 -j DROP
 
 rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt/archives/*
