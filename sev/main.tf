@@ -1,5 +1,5 @@
 locals {
-  image_tag = "testsev:v1.1"
+  image_tag = "testsev:v1.2"
 }
 
 # Configure the Azure provider
@@ -69,6 +69,9 @@ resource "null_resource" "docker_push" {
         docker push $IMAGE
     EOT
   }
+  depends_on = [
+    docker_image.image
+  ]
 }
 
 resource "null_resource" "make_cce_policy" {
