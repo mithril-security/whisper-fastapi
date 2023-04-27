@@ -32,16 +32,10 @@ cd $HOME
 git clone https://github.com/mithril-security/whisper-fastapi.git
 cd $HOME/whisper-fastapi
 git checkout disable-openchatkit
-docker build --target sev-aci -t guest .
 cd $HOME
 
 # Install and start model store
 python3.9 -m pip install -r model_store_requirements.txt
 python3.9 model_store.py download "openai/whisper-tiny.en"
-
-# iptables rules inserted from CLI
-iptables -I DOCKER-USER -i docker0 -d 168.63.129.16 -j ACCEPT
-iptables -I DOCKER-USER -i docker0 -d 127.0.0.1 -j ACCEPT
-iptables -I DOCKER-USER -i docker0 -j DROP
 
 rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apt/archives/*

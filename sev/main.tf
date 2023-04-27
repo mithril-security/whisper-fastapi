@@ -28,12 +28,12 @@ provider "docker" {}
 
 # Resource group
 resource "azurerm_resource_group" "rg" {
-  name     = "TestACIGroup"
+  name     = "TestACIGroup4"
   location = "North Europe"
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "amdSEVTestContainerRegistry284"
+  name                = "amdSEVTestContainerRegistry2849"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
@@ -55,8 +55,8 @@ resource "docker_image" "image" {
 resource "null_resource" "docker_push" {
   provisioner "local-exec" {
     environment = {
-      LOGIN_SERVER   = nonsensitive(azurerm_container_registry.acr.login_server),
-      ADMIN_USERNAME = nonsensitive(azurerm_container_registry.acr.admin_username),
+      LOGIN_SERVER   = azurerm_container_registry.acr.login_server,
+      ADMIN_USERNAME = azurerm_container_registry.acr.admin_username,
       ADMIN_PASSWORD = azurerm_container_registry.acr.admin_password,
       IMAGE          = docker_image.image.name
     }
@@ -129,7 +129,7 @@ resource "azurerm_resource_group_template_deployment" "container" {
                   "image" : docker_image.image.name,
                   "ports" : [
                     {
-                      "port" : 22,
+                      "port" : 80,
                       "protocol" : "TCP"
                     }
                   ],
@@ -152,7 +152,7 @@ resource "azurerm_resource_group_template_deployment" "container" {
               "type" : "Public",
               "ports" : [
                 {
-                  "port" : 22,
+                  "port" : 80,
                   "protocol" : "TCP"
                 }
               ]
