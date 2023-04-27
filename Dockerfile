@@ -21,11 +21,6 @@ COPY serializers.py /
 COPY server.py /
 COPY start.sh /
 
-COPY run.sh /
-ENV PROXY_SERVER=localhost
-ENV PROXY_PORT=3128
-RUN apt-get update && apt-get install iptables redsocks curl lynx -qy
-COPY redsocks.conf /etc/redsocks.conf
-RUN chmod +x /run.sh && /run.sh && chmod +x /start.sh
+RUN chmod +x /start.sh
 
 CMD ["/start.sh"]

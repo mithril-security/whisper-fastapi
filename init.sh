@@ -30,9 +30,6 @@ update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 DOCKER_RAMDISK=true dockerd &
 sleep 10
 
-# iptable rules inserted from CLI
-iptables -I DOCKER-USER -i docker0 -j DROP
-
 # Download app
 cd /
 cd whisper-fastapi
@@ -44,6 +41,9 @@ source env/bin/activate
 pip install -r model_store_requirements.txt
 python model_store.py download "openai/whisper-tiny.en"
 python model_store.py serve --address 0.0.0.0 &
+
+# iptable rules inserted from CLI
+iptables -I DOCKER-USER -i docker0 -j DROP
 
 # Build and start enclave app
 exec make
